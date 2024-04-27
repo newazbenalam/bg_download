@@ -2,19 +2,46 @@ import 'package:bg_download/features/downloader/presentation/provider/downloader
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DownloaderScreen extends StatelessWidget {
+class DownloaderScreen extends StatefulWidget {
   final String title;
   const DownloaderScreen({super.key, required this.title});
+
+  @override
+  State<DownloaderScreen> createState() => _DownloaderScreenState();
+}
+
+class _DownloaderScreenState extends State<DownloaderScreen>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    context.read<DownloaderProvider>().setDismiss(true);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      context.read<DownloaderProvider>().setDismiss(false);
+    } else {
+      context.read<DownloaderProvider>().setDismiss(true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
       ),
       floatingActionButton: IconButton(
         color: Colors.deepPurpleAccent[400],
         onPressed: () {
+          if (context.read<DownloaderProvider>().isDownloading) {
+            context.read<DownloaderProvider>().showSnackBar(context);
+            return;
+          }
           context.read<DownloaderProvider>().downloadFile();
         },
         icon: const Padding(

@@ -6,8 +6,16 @@ import 'package:permission_handler/permission_handler.dart';
 class DownloaderProvider extends ChangeNotifier {
   final NotificationService _notificationService = NotificationService();
   double _progress = 0;
+  bool _isDismissed = false;
+  bool _isDownloading = false;
 
   double get progress => _progress;
+  bool get isDismissed => _isDismissed;
+  bool get isDownloading => _isDownloading;
+
+  void setDismiss(bool value) {
+    _isDismissed = value;
+  }
 
   void showNotification(int progress, String subTitle) {
     _notificationService.createNotification(
@@ -20,12 +28,17 @@ class DownloaderProvider extends ChangeNotifier {
   }
 
   Future<void> downloadFile() async {
+    if (_isDownloading) {
+      return;
+    }
+    _isDownloading = true;
+
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
     ].request();
     debugPrint(statuses[Permission.storage].toString());
 
-    showNotification(0, 'Starting!');
+    // showNotification(0, 'Starting!');
     final dio = Dio();
     const savePath = '/sdcard/Download/';
     const url =
@@ -38,24 +51,30 @@ class DownloaderProvider extends ChangeNotifier {
         onReceiveProgress: (receivedBytes, totalBytes) {
           if (totalBytes != -1) {
             _progress = (receivedBytes / totalBytes) * 100;
+            notifyListeners();
+            if (!_isDismissed) {
+              _notificationService.dismiss(2);
+              return;
+            }
             // saving msg overflowing
-            if (_progress.round() % 2 == 0) {
+            if ((_progress.round() % 2 == 0)) {
               showNotification(
                 _progress.toInt(),
                 '${_progress.roundToDouble()} %',
               );
             }
-            notifyListeners();
           }
         },
       );
       // most off the devices doesn't get along with changing same notification channel id so hence 1s delay
+      _notificationService.dismiss(2);
       Future.delayed(const Duration(seconds: 1), () {
         _notificationService.showNotification(
           id: 2,
           title: "Download Complete",
           body: savePath + url.split('/').last,
         );
+        _isDownloading = false;
       });
     } catch (e) {
       // Handle error
@@ -65,6 +84,15 @@ class DownloaderProvider extends ChangeNotifier {
         title: "Download Failed!",
         body: "",
       );
+      _isDownloading = false;
     }
+  }
+
+  void showSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Alread in progress!"),
+      ),
+    );
   }
 }

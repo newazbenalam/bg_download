@@ -75,4 +75,8 @@ class NotificationService {
       payload: '/',
     );
   }
+
+  Future<void> dismiss(id) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
+  }
 }
