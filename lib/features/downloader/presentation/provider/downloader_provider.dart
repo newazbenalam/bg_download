@@ -88,10 +88,10 @@ class DownloaderProvider extends ChangeNotifier {
     }
   }
 
-  void showSnackBar(BuildContext context) {
+  void showSnackBar(BuildContext context, String title) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Alread in progress!"),
+      SnackBar(
+        content: Text(title),
       ),
     );
   }
