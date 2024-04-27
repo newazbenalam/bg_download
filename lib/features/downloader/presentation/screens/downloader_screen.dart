@@ -16,7 +16,7 @@ class _DownloaderScreenState extends State<DownloaderScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    context.read<DownloaderProvider>().setDismiss(true);
+    context.read<DownloaderProvider>().setDismiss(false);
   }
 
   @override
@@ -39,7 +39,9 @@ class _DownloaderScreenState extends State<DownloaderScreen>
         color: Colors.deepPurpleAccent[400],
         onPressed: () {
           if (context.read<DownloaderProvider>().isDownloading) {
-            context.read<DownloaderProvider>().showSnackBar(context);
+            context
+                .read<DownloaderProvider>()
+                .showSnackBar(context, "Already in progress!");
             return;
           }
           context.read<DownloaderProvider>().downloadFile();
