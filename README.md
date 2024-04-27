@@ -2,7 +2,7 @@
 
 A new Flutter project.
 
-![Demo]([demo/demo.gif](https://raw.githubusercontent.com/newazbenalam/bg_download/main/docs/untitled.gif))
+![Demo]([https://raw.githubusercontent.com/newazbenalam/bg_download/main/docs/untitled.gif](https://raw.githubusercontent.com/newazbenalam/bg_download/main/docs/untitled.gif))
 
 ## Getting Started
 
