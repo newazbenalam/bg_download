@@ -2,7 +2,6 @@ import 'package:bg_download/core/notification_services.dart';
 import 'package:bg_download/features/downloader/presentation/provider/downloader_provider.dart';
 import 'package:bg_download/features/downloader/presentation/screens/downloader_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 void main() {
