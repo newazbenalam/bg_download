@@ -35,8 +35,7 @@ class _DownloaderScreenState extends State<DownloaderScreen>
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      floatingActionButton: IconButton(
-        color: Colors.deepPurpleAccent[400],
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (context.read<DownloaderProvider>().isDownloading) {
             context
@@ -46,10 +45,7 @@ class _DownloaderScreenState extends State<DownloaderScreen>
           }
           context.read<DownloaderProvider>().downloadFile();
         },
-        icon: const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Icon(Icons.download),
-        ),
+        child: const Icon(Icons.download),
       ),
       body: Column(
         children: [
