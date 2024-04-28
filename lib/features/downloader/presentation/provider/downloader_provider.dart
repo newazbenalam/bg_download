@@ -42,7 +42,7 @@ class DownloaderProvider extends ChangeNotifier {
     final dio = Dio();
     const savePath = '/sdcard/Download/';
     const url =
-        "https://file-examples.com/storage/feeb836c2d66294eb99ac59/2017/04/file_example_MP4_1920_18MG.mp4";
+        "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_10mb.mp4";
 
     try {
       await dio.download(
